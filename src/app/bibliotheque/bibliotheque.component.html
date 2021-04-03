@@ -1,0 +1,107 @@
+
+
+<div>
+
+    <div *ngIf="afficheMessageAlert" class="alert alert-warning">
+        {{message}}
+    </div>
+
+
+    <div [hidden]="submitted" (ngSubmit)="onSubmit()" *ngIf="viewAjoutBibliotheque">
+        <div class="display-elements">
+            <div id="ajout-text">
+                <h2 *ngIf="!estEnModeEdit" >Emprunter un livre</h2>
+                <h2 *ngIf="estEnModeEdit" >Modification</h2>
+            </div>
+            <div id="btn-list">
+                <button class="btn btn-primary" (click)="pristinePageAjout()">Liste des livres empruntés</button>
+            </div>
+        </div>
+
+        <form>
+            <div class="form-group">
+                <label for="adherent">Adhérent : </label>
+                <select name="adherent" id="adherent" [formControl]="adherent"  class="form-control" >
+                    <option *ngIf="estEnModeEdit" [ngValue]="adherent.value"  class="form-control" >{{adherent.value?.nom}} {{adherent.value?.prenom}}</option>
+                    <option *ngFor="let adh of adherents" [ngValue]="adh"  class="form-control" >{{adh.nom}} {{adh.prenom}}</option>
+                </select>
+              </div>
+              <div [hidden]="adherent.valid" class="alert alert-danger">
+                    Adhérent est obligatoire
+              </div>
+
+              <div class="form-group">
+                <label for="livre">Livre à emprunter : </label>
+                <select name="livre" id="livre" [formControl]="livre"  class="form-control" >
+                    <option *ngIf="estEnModeEdit" [ngValue]="livre.value"  class="form-control" >{{livre.value?.titre}}</option>
+                    <option  *ngFor="let liv of livres" [ngValue]="liv"  class="form-control" >{{liv.titre}}</option>
+                </select>
+              </div>
+              <div [hidden]="livre.valid" class="alert alert-danger">
+                  Choisissez le livre à emprunteer
+              </div>
+
+
+            <div class="form-group">
+              <label for="dateRetour">Date de retour : </label>
+              <input type="date" class="form-control" id="dateRetour" name="dateRetour" placeholder="Nom de l'éditeur du livre" 
+              [formControl]="dateRetour"  />
+            </div>
+            <div *ngIf="!estEnModeEdit" [hidden]="!dateRetour.valid || !dateRetour.pristine" class="alert alert-danger">
+                La date de retour est obligatoire
+            </div>
+            <div *ngIf="estEnModeEdit" [hidden]="dateRetour.valid" class="alert alert-danger">
+                La date de retour est obligatoire
+            </div>
+            
+            <button [disabled]="!dateRetour.valid || !livre.valid || !adherent.valid || !adherent.dirty || !livre.dirty" type="submit" class="btn class-bg" (click)="addBibliotheque()" *ngIf="!estEnModeEdit" >Ajouter</button>
+
+            <button [disabled]="!dateRetour.valid || !livre.valid || !adherent.valid" type="submit" class="btn class-bg" (click)="editBibliotheque(idBibliotheque)" *ngIf="estEnModeEdit" >Modifier</button>
+        </form>
+
+
+
+          
+    </div>
+
+    <div *ngIf="!viewAjoutBibliotheque">
+
+        <div class="display-elements">
+            <div id="ajout-text">
+                <h2 *ngIf="bibliotheques.length !== 0">Liste des emprunts</h2>
+                <h2 *ngIf="bibliotheques.length === 0">Auncun emprunt n'a été fait</h2>
+            </div>
+            <div id="btn-list">
+                <button class="btn btn-primary" (click)="showPageAjout()">Ajouter</button>
+            </div>
+        </div>
+
+
+        <div class="contenir-personne"></div>
+        <div>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Adhérent</th>
+                        <th>Livre</th>
+                        <th>Date Prise</th>
+                        <th>Date de retour</th>
+                        <th colspan="2">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let bi of bibliotheques; let i=index" >
+                        <th>{{bi.adherent?.nom}} {{bi.adherent?.prenom}}</th>
+                        <td>{{bi.livre?.titre}}</td>
+                        <td>{{bi.datePris}}</td>
+                        <td>{{bi.dateRetour}}</td>
+                        <td><i-bs name="trash-fill" class="text-danger margin-left" (click)="deleteBibliotheque(bi?.id)" ></i-bs></td>
+                        <td><i-bs name="pencil-square" class="text-primary margin-left" width="2rem" height="2rem" (click)="showEditPage(i)" ></i-bs></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+

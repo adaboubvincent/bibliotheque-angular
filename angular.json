@@ -17,6 +17,12 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "allowedCommonJsDependencies": [
+                "jquery",
+                "jquery-ui",
+                "lodash",
+                "bootstrap-notify"
+            ],
             "outputPath": "dist/bibliotheque",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -28,9 +34,16 @@
               "src/assets"
             ],
             "styles": [
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "src/assets/css/inclus/bootstrap.min.css",
               "src/styles.css"
             ],
-            "scripts": []
+            "scripts": [
+              "src/assets/javascript/inclus/jquery.min.js",
+              "src/assets/javascript/inclus/bootstrap.min.js",
+              "src/assets/javascript/inclus/jquery.nivo.slider.js",
+              "src/assets/javascript/inclus/popper.min.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -91,9 +104,14 @@
               "src/assets"
             ],
             "styles": [
+              "../node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/styles.css"
             ],
-            "scripts": []
+            "scripts": [
+              //"node_modules/jquery/dist/jquery.min.js",
+              "../node_modules/jquery/dist/jquery.min.js",
+              "../node_modules/jquery-ui/jquery-ui.js"
+            ]
           }
         },
         "lint": {

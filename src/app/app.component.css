@@ -1,0 +1,24 @@
+.blanche {
+    color: aliceblue !important;
+}
+/* .blanche:hover{
+    color: aliceblue;
+    text-shadow: 25px 15px black;
+} */
+
+.espace{
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+ul li {
+    list-style-type: none;
+}
+
+#id-bg, #id-bar-bg{
+    background-color: rgb(255, 132, 0);
+}
+
+#contenir{
+    margin-top: 78px;
+}

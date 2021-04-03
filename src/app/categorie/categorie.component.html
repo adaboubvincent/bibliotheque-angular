@@ -1,0 +1,96 @@
+
+
+<div>
+
+    <div *ngIf="afficheMessageAlert" class="alert alert-warning">
+        {{message}}
+    </div>
+
+
+    <div [hidden]="submitted" (ngSubmit)="onSubmit()" *ngIf="viewAjoutCategorie">
+        <div class="display-elements">
+            <div id="ajout-text">
+                <h2 *ngIf="!estEnModeEdit" >Ajouter une catégorie</h2>
+                <h2 *ngIf="estEnModeEdit" >Modifier cette catégorie</h2>
+            </div>
+            <div id="btn-list">
+                <button class="btn btn-primary" (click)="pristinePageAjout()">Liste des Catégories</button>
+            </div>
+        </div>
+
+          <form>
+            <div class="form-group">
+              <label for="titre">Titre : </label>
+              <input type="text" class="form-control" id="titre" name="titre" aria-describedby="emailHelp" placeholder="Enter le titre"
+              [formControl]="titre" />
+            </div>
+            <div *ngIf="!estEnModeEdit" [hidden]="!titre.valid || !titre.pristine" class="alert alert-danger">
+                Le titre est obligatoire
+            </div>
+            <div *ngIf="estEnModeEdit" [hidden]="titre.valid" class="alert alert-danger">
+                Le titre est obligatoire
+            </div>
+
+            
+            <div class="form-group">
+              <label for="description">Description : </label>
+              <input type="text" class="form-control"  id="description" name="description" placeholder="Votre description" 
+              [formControl]="description"  />
+            </div>
+            <div *ngIf="!estEnModeEdit" [hidden]="!description.valid || !description.pristine" class="alert alert-danger">
+                La description est obligatoire
+            </div>
+            <div *ngIf="estEnModeEdit" [hidden]="description.valid" class="alert alert-danger">
+                La description est obligatoire
+            </div>
+            
+            <button [disabled]="!titre.valid || !description.valid" type="submit" class="btn class-bg" (click)="addCategorie()" *ngIf="!estEnModeEdit" >Ajouter</button>
+
+            <button [disabled]="!titre.valid || !description.valid" type="submit" class="btn class-bg" (click)="editCategorie(idCategorie)" *ngIf="estEnModeEdit" >Modifier</button>
+          </form>
+
+
+
+          
+    </div>
+
+    <div *ngIf="!viewAjoutCategorie">
+
+        <div class="display-elements">
+            <div id="ajout-text">
+                <h2 *ngIf="categories.length !== 0">Liste des catégories</h2>
+                <h2 *ngIf="categories.length === 0">Auncune catégorie enrégistrée</h2>
+            </div>
+            <div id="btn-list">
+                <button class="btn btn-primary" (click)="showPageAjout()">Ajouter</button>
+            </div>
+        </div>
+
+
+        
+        <div class="contenir-personne"></div>
+        <div>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Titre</th>
+                        <th>Description</th>
+                        <th colspan="2">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let cat of categories; let i=index" >
+                        <th>{{cat.titre}}</th>
+                        <td>{{cat.description}}</td>
+                        <td><i-bs name="trash-fill" class="text-danger margin-left" (click)="deleteCategorie(cat?.id)" ></i-bs></td>
+                        <td><i-bs name="pencil-square" class="text-primary margin-left" width="2rem" height="2rem" (click)="showEditPage(i)" ></i-bs></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+       
+    </div>
+
+</div>
+

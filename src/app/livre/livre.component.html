@@ -1,0 +1,119 @@
+
+
+<div>
+
+    <div *ngIf="afficheMessageAlert" class="alert alert-warning">
+        {{message}}
+    </div>
+
+
+    <div [hidden]="submitted" (ngSubmit)="onSubmit()" *ngIf="viewAjoutLivre">
+        <div class="display-elements">
+            <div id="ajout-text">
+                <h2 *ngIf="!estEnModeEdit" >Ajouter un Livre</h2>
+                <h2 *ngIf="estEnModeEdit" >Modifier cet Livre</h2>
+            </div>
+            <div id="btn-list">
+                <button class="btn btn-primary" (click)="pristinePageAjout()">Liste des Livres</button>
+            </div>
+        </div>
+
+        <form>
+            <div class="form-group">
+              <label for="titre">Titre : </label>
+              <input type="text" class="form-control" id="titre" name="titre" aria-describedby="emailHelp" placeholder="Le titre du livre"
+              [formControl]="titre" />
+            </div>
+            <div *ngIf="!estEnModeEdit" [hidden]="!titre.valid || !titre.pristine" class="alert alert-danger">
+                Nom est obligatoire
+            </div>
+            <div *ngIf="estEnModeEdit" [hidden]="titre.valid" class="alert alert-danger">
+                Nom est obligatoire
+            </div>
+
+            <div class="form-group">
+                <label for="categorie">Catégorie : </label>
+                <select name="categorie" id="categorie" [formControl]="categorie"  class="form-control" >
+                    <option *ngIf="estEnModeEdit" [ngValue]="categorie.value"  class="form-control" >{{categorie.value?.titre}}</option>
+                    <option *ngFor="let cat of categories" [ngValue]="cat"  class="form-control" >{{cat.titre}}</option>
+                </select>
+              </div>
+              <div [hidden]="categorie.valid" class="alert alert-danger">
+                  La catégorie est obligatoire
+              </div>
+
+              <div class="form-group">
+                <label for="auteur">Auteur du livre : </label>
+                <select name="auteur" id="auteur" [formControl]="auteur"  class="form-control" >
+                    <option *ngIf="estEnModeEdit" [ngValue]="auteur.value"  class="form-control" >{{auteur.value?.nom}} {{auteur.value?.prenom}}</option>
+                    <option  *ngFor="let aut of auteurs" [ngValue]="aut"  class="form-control" >{{aut.nom}} {{aut.prenom}}</option>
+                </select>
+              </div>
+              <div [hidden]="auteur.valid" class="alert alert-danger">
+                  Le choix de l'auteur est obligatoire
+              </div>
+
+
+            <div class="form-group">
+              <label for="editeur">Editeur : </label>
+              <input type="text" class="form-control" id="editeur" name="editeur" placeholder="Nom de l'éditeur du livre" 
+              [formControl]="editeur"  />
+            </div>
+            <div *ngIf="!estEnModeEdit" [hidden]="!editeur.valid || !editeur.pristine" class="alert alert-danger">
+                Editeur est obligatoire
+            </div>
+            <div *ngIf="estEnModeEdit" [hidden]="editeur.valid" class="alert alert-danger">
+                Editeur est obligatoire
+            </div>
+            
+            <button [disabled]="!titre.valid || !editeur.valid || !auteur.valid || !categorie.valid || !categorie.dirty || !auteur.dirty" type="submit" class="btn class-bg" (click)="addLivre()" *ngIf="!estEnModeEdit" >Ajouter</button>
+
+            <button [disabled]="!titre.valid || !editeur.valid || !auteur.valid || !categorie.valid" type="submit" class="btn class-bg" (click)="editLivre(idLivre)" *ngIf="estEnModeEdit" >Modifier</button>
+        </form>
+
+
+
+          
+    </div>
+
+    <div *ngIf="!viewAjoutLivre">
+
+        <div class="display-elements">
+            <div id="ajout-text">
+                <h2 *ngIf="livres.length !== 0">Liste des livres</h2>
+                <h2 *ngIf="livres.length === 0">Aucun livre enrégistré</h2>
+            </div>
+            <div id="btn-list">
+                <button class="btn btn-primary" (click)="showPageAjout()">Ajouter</button>
+            </div>
+        </div>
+
+
+        <div class="contenir-personne"></div>
+        <div>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Titre</th>
+                        <th>Catégorie</th>
+                        <th>Auteur</th>
+                        <th>Editeur</th>
+                        <th colspan="2">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let liv of livres; let i=index" >
+                        <th>{{liv.titre}}</th>
+                        <td>{{liv.categorie?.titre}}</td>
+                        <td>{{liv.auteur?.nom}} {{liv.auteur?.prenom}}</td>
+                        <td>{{liv.editeur}}</td>
+                        <td><i-bs name="trash-fill" class="text-danger margin-left" (click)="deleteLivre(liv?.id)" ></i-bs></td>
+                        <td><i-bs name="pencil-square" class="text-primary margin-left" width="2rem" height="2rem" (click)="showEditPage(i)" ></i-bs></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+

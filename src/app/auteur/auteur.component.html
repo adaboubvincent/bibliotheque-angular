@@ -1,0 +1,144 @@
+
+
+<div>
+    <div *ngIf="afficheMessageAlert" class="alert alert-warning">
+        {{message}}
+    </div>
+
+    <div [hidden]="submitted" (ngSubmit)="onSubmit()" *ngIf="viewAjoutAuteur">
+        <div class="display-elements">
+            <div id="ajout-text">
+                <h2 *ngIf="!estEnModeEdit" >Ajouter un auteur</h2>
+                <h2 *ngIf="estEnModeEdit" >Modifier cet auteur</h2>
+            </div>
+            <div id="btn-list">
+                <button class="btn btn-primary" (click)="pristinePageAjout()">Liste des Auteurs</button>
+            </div>
+        </div>
+        <!-- <form #auteurForm="ngForm" >
+            <div class="form-group">
+              <label for="nom">Nom : </label>
+              <input type="text" class="form-control" id="nom" name="nom" aria-describedby="emailHelp" placeholder="Enter votre nom"
+              [(ngModel)]="auteur.nom" #nom="ngModel" />
+            </div>
+            <div [hidden]="nom.valid || nom.pristine" class="alert alert-danger">
+                Nom est obligatoire
+            </div>
+            <div class="form-group">
+              <label for="prenom">Prénom : </label>
+              <input type="text" class="form-control" id="prenom" name="prenom" placeholder="Enter votre prénom" 
+              [(ngModel)]="auteur.prenom" #prenom="ngModel"  />
+            </div>
+            <div [hidden]="prenom.valid || prenom.pristine" class="alert alert-danger">
+                Prénom est obligatoire
+            </div>
+            
+            <button [disabled]="!auteurForm.form.valid" type="submit" class="btn class-bg" (click)="addAuteur()" *ngIf="!estEnModeEdit" >Ajouter</button>
+
+            <button [disabled]="!auteurForm.form.valid" type="submit" class="btn class-bg" (click)="editAuteur()" *ngIf="estEnModeEdit" >Modifier</button>
+          </form> -->
+
+          <form>
+            <div class="form-group">
+              <label for="nom">Nom : </label>
+              <input type="text" class="form-control" id="nom" name="nom" aria-describedby="emailHelp" placeholder="Enter votre nom"
+              [formControl]="nom" />
+            </div>
+            <div *ngIf="!estEnModeEdit" [hidden]="!nom.valid || !nom.pristine" class="alert alert-danger">
+                Nom est obligatoire
+            </div>
+            <div *ngIf="estEnModeEdit" [hidden]="nom.valid" class="alert alert-danger">
+                Nom est obligatoire
+            </div>
+
+
+            <div class="form-group">
+              <label for="prenom">Prénom : </label>
+              <input type="text" class="form-control" id="prenom" name="prenom" placeholder="Enter votre prénom" 
+              [formControl]="prenom"  />
+            </div>
+            <div *ngIf="!estEnModeEdit" [hidden]="!prenom.valid || !prenom.pristine" class="alert alert-danger">
+                Prénom est obligatoire
+            </div>
+            <div *ngIf="estEnModeEdit" [hidden]="prenom.valid" class="alert alert-danger">
+                Prénom est obligatoire
+            </div>
+
+            
+            <button [disabled]="!nom.valid || !prenom.valid" type="submit" class="btn class-bg" (click)="addAuteur()" *ngIf="!estEnModeEdit" >Ajouter</button>
+
+            <button [disabled]="!nom.valid || !prenom.valid" type="submit" class="btn class-bg" (click)="editAuteur(idAuteur)" *ngIf="estEnModeEdit" >Modifier</button>
+          </form>
+
+
+
+          
+    </div>
+
+    <div *ngIf="!viewAjoutAuteur">
+        
+
+      <div class="display-elements">
+          <div id="ajout-text">
+              <h2 *ngIf="auteurs.length !== 0">Liste des auteurs</h2>
+              <h2 *ngIf="auteurs.length === 0">Aucun auteur inscrit</h2>
+          </div>
+          <div id="btn-list">
+            <button class="btn btn-primary" (click)="showPageAjout()">Ajouter</button>
+          </div>
+      </div>
+
+
+        <div class="contenir-personne"></div>
+        <div class="row" *ngFor="let aut of auteurs; let i=index"  >
+            <div class="col-sm-4" >
+                <a href="#{{aut.nom}}-{{aut.prenom}}" class="no-action" (click)="noAction(i)" data-toggle="modal" data-target="#exampleModalCenter" ><img class="rounded-circle" width="75" height="75" src="../../assets/images/logo/user_001.jpg" title="Profi" alt="Profi"></a>
+            </div>
+            <div class="col-sm-6" id="center-text">
+                <span class="sub-contenir">{{aut.nom}} {{aut.prenom}} </span>
+            </div>
+            <div class="col-sm-2" id="center-trois-poits">
+                <i-bs name="trash-fill" class="text-danger margin-left" (click)="deleteAuteur(aut.id)" ></i-bs>
+                <i-bs name="pencil-square" class="text-primary margin-left" width="2rem" height="2rem" (click)="showEditPage(i)" ></i-bs>
+            </div>
+            
+        </div>
+        <div class="contenir-personne"></div>
+    </div>
+
+<!--     
+
+    <div id="dialogue-aide-documentation">
+        <h3>Si vous voulez avoir des informations concernant l'utilisation de ce site, veuillez cliquer sur le lien "Documentation"</h3><br/>
+    </div>
+
+    <button (click)="b()" >BTN</button>
+
+     -->
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Le profile de l'auteur</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <img class="center rounded-circle" width="75" height="75" src="../../assets/images/logo/user_001.jpg" title="Profi" alt="Profi">
+        <h3>Nom : {{nomAAfficher}}</h3>
+        <h3>Prénom : {{prenomAAfficher}}</h3>
+        <h4 *ngIf="numberOfLivreWrite !== 0" >Cet auteur a {{numberOfLivreWrite}} de ses livre(s) dans cette bibliothéque</h4>
+        <h4 *ngIf="numberOfLivreWrite === 0" >Cet auteur n'a pas ses livres dans cette bibliothéque</h4>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+

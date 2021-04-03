@@ -1,1 +1,53 @@
 /* You can add global styles to this file, and also import other style files */
+@import '~bootstrap/dist/css/bootstrap.min.css';
+
+#contenir{
+    width: 65%;
+    margin: auto;
+}
+.class-bg {
+    background-color: rgb(255, 132, 0);
+}
+
+.ng-valid[required], .ng-valid.required, .ng-valid:not(form) {
+    border-left: 5px solid green;
+}
+
+.ng-invalid:not(form) {
+    border-left: 5px solid red;
+}
+
+.sub-contenir{
+    position: relative;
+}
+
+#center-text, #center-trois-poits, #center-supprimer-modifier, .center{
+    margin: auto;
+    width: auto;
+    height: auto;
+    text-align: center;
+}
+#center-trois-poits{
+    font-weight: bold;
+    size: 50px;
+    font-size: 50px;
+}
+
+.display-elements #ajout-text, .display-elements #btn-list{
+    margin-left: 25px;
+    display: inline-block;
+}
+
+.contenir-personne{
+    margin-top: 25px;
+}
+
+.margin-left{
+    margin-left: 10px;
+}
+
+
+
+/*
+SLIDER
+*/

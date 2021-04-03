@@ -1,0 +1,140 @@
+
+
+<div>
+
+    <div *ngIf="afficheMessageAlert" class="alert alert-warning">
+      {{message}}
+    </div>
+
+
+    <div [hidden]="submitted" (ngSubmit)="onSubmit()" *ngIf="viewAjoutAdherent">
+        <div class="display-elements">
+            <div id="ajout-text">
+                <h2 *ngIf="!estEnModeEdit" >Ajouter un adhérent</h2>
+                <h2 *ngIf="estEnModeEdit" >Modifier cet adhérent</h2>
+            </div>
+            <div id="btn-list">
+                <button class="btn btn-primary" (click)="pristinePageAjout()">Liste des adhérents</button>
+            </div>
+        </div>
+
+          <form>
+            <div class="form-group">
+              <label for="nom">Nom : </label>
+              <input type="text" class="form-control" id="nom" name="nom" aria-describedby="emailHelp" placeholder="Enter votre nom"
+              [formControl]="nom" />
+            </div>
+            <div *ngIf="!estEnModeEdit" [hidden]="!nom.valid || !nom.pristine" class="alert alert-danger">
+                Le nom de l'adhérent est obligatoire
+            </div>
+            <div *ngIf="estEnModeEdit" [hidden]="nom.valid" class="alert alert-danger">
+                Le nom de l'adhérent est obligatoire
+            </div>
+
+
+            <div class="form-group">
+              <label for="prenom">Prénom : </label>
+              <input type="text" class="form-control" id="prenom" name="prenom" placeholder="Enter votre prénom" 
+              [formControl]="prenom"  />
+            </div>
+            <div *ngIf="!estEnModeEdit" [hidden]="!prenom.valid || !prenom.pristine" class="alert alert-danger">
+                Le prénom de l'adhérent est obligatoire
+            </div>
+            <div *ngIf="estEnModeEdit" [hidden]="prenom.valid" class="alert alert-danger">
+                Le prénom de l'adhérent est obligatoire
+            </div>
+
+            <div class="form-group">
+                <label for="telephone">Téléphone : </label>
+                <input type="text" class="form-control" id="telephone" name="telephone" aria-describedby="emailHelp" placeholder="Enter le téléphone de l'adhérent"
+                [formControl]="telephone" />
+              </div>
+              <div *ngIf="!estEnModeEdit" [hidden]="!telephone.valid || !telephone.pristine" class="alert alert-danger">
+                  Le téléphone de l'adhérent est obligatoire
+              </div>
+              <div *ngIf="estEnModeEdit" [hidden]="telephone.valid" class="alert alert-danger">
+                  Le téléphone de l'adhérent est obligatoire
+              </div>
+
+              <div class="form-group">
+                <label for="email">Email : </label>
+                <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp" placeholder="Enter l'email de l'adhérent"
+                [formControl]="email" />
+              </div>
+              <div *ngIf="!estEnModeEdit" [hidden]="email.valid || email.pristine" class="alert alert-danger">
+                 Entrez un email correct
+              </div>
+              <div *ngIf="estEnModeEdit" [hidden]="email.valid" class="alert alert-danger">
+                Entrez un email correct
+             </div>
+            
+            <button [disabled]="!nom.valid || !prenom.valid || !telephone.valid || !email.valid" type="submit" class="btn class-bg" (click)="addAdherent()" *ngIf="!estEnModeEdit" >Ajouter</button>
+
+            <button [disabled]="!nom.valid || !prenom.valid || !telephone.valid || !email.valid" type="submit" class="btn class-bg" (click)="editAdherent(idAdherent)" *ngIf="estEnModeEdit" >Modifier</button>
+          </form>
+
+
+
+          
+    </div>
+
+    <div *ngIf="!viewAjoutAdherent">
+        
+
+      <div class="display-elements">
+          <div id="ajout-text">
+              <h2 *ngIf="adherents.length !== 0" >Liste des adhérents</h2>
+              <h2 *ngIf="adherents.length === 0" >Aucun adhérent inscrit</h2>
+          </div>
+          <div id="btn-list">
+            <button class="btn btn-primary" (click)="showPageAjout()">Ajouter</button>
+          </div>
+      </div>
+
+
+        <div class="contenir-personne"></div>
+        <div class="row" *ngFor="let adh of adherents; let i=index" >
+            <div class="col-sm-4">
+                <a  href="#{{adh.nom}}-{{adh.prenom}}" class="no-action" (click)="noAction(i)" data-toggle="modal" data-target="#exampleModalCenter"><img class="rounded-circle" width="75" height="75" src="../../assets/images/logo/user_001.jpg" title="Profi" alt="Profi"></a>
+            </div>
+            <div class="col-sm-6" id="center-text">
+                <span class="sub-contenir">{{adh.nom}} {{adh.prenom}} | {{adh.telephone}} ( {{adh.email}} )</span>
+            </div>
+            <div class="col-sm-2" id="center-trois-poits">
+                <i-bs name="trash-fill" class="text-danger margin-left" (click)="deleteAdherent(adh.id)" ></i-bs>
+                <i-bs name="pencil-square" class="text-primary margin-left" width="2rem" height="2rem" (click)="showEditPage(i)" ></i-bs>
+            </div>
+            
+        </div>
+        <div class="contenir-personne"></div>
+    </div>
+
+
+    
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Le profile de l'auteur</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <img class="center rounded-circle" width="75" height="75" src="../../assets/images/logo/user_001.jpg" title="Profi" alt="Profi">
+        <h3>Nom : {{nomAAfficher}}</h3>
+        <h3>Prénom : {{prenomAAfficher}}</h3>
+        <h4 *ngIf="numberOfLivreEmprunt !== 0" >Cet adhérent a emprunté {{numberOfLivreEmprunt}} livre(s) dans cette bibliothéque</h4>
+        <h4 *ngIf="numberOfLivreEmprunt === 0" >Cet adhérent n'a pas encore emprunté un livres dans cette bibliothéque</h4>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+
